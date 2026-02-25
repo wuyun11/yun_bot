@@ -62,6 +62,7 @@ cover/
 # ------------- 开发工具 (PyCharm / Cursor) -------------
 # PyCharm / JetBrains
 .idea/
+.cursor/
 
 # Cursor（AI 编辑器，敏感数据可放 .cursorignore）
 .cursorignore
