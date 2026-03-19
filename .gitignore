@@ -110,3 +110,7 @@ cython_debug/
 # ------------- 项目相关 -------------
 chroma_db/
 md5.text
+logs/
+config/python_path.local.txt
+data/chat_history/
+data/user_aliases/

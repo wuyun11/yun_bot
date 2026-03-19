@@ -1,25 +1,27 @@
+from __future__ import annotations
+
 from nonebot import on_message
 from nonebot.adapters.qq import MessageEvent
 from nonebot.rule import Rule, to_me
-from langchain_core.messages import SystemMessage, HumanMessage
-from langchain_ollama import OllamaLLM
 
-menu = ["/天气", "/查天气", "/摸摸"]
+from src.langchain_app.chat import get_group_chat_service
+from src.langchain_app.qq import get_display_name, get_group_id, get_user_id, is_group_message
 
-_model = None
-
-def _get_model() -> OllamaLLM:
-    global _model
-    if _model is None:
-        _model = OllamaLLM(model="qwen3:4b")
-    return _model
+MENU_COMMANDS = {
+    "/help",
+    "/name",
+    "/set name",
+    "/rag",
+    "/upload",
+    "/clear",
+}
 
 
 async def check_value_in_menu(message: MessageEvent) -> bool:
-    value = message.get_plaintext().strip().split(" ")
-    if value[0] in menu:
-        return False
-    return True
+    text = message.get_plaintext().strip()
+    if not text:
+        return True
+    return not any(text.startswith(command) for command in MENU_COMMANDS)
 
 
 check = on_message(rule=to_me() & Rule(check_value_in_menu), block=True, priority=10)
@@ -31,12 +33,16 @@ async def handle_function(message: MessageEvent):
     if not text:
         await check.finish("请输入内容。")
         return
-    model = _get_model()
-    reply = model.invoke(
-        [
-            SystemMessage(content="你是有用的助手。回答时不要包含任何网址、链接或 URL，只输出纯文字内容。"),
-            HumanMessage(content=text),
-        ]
-    )
-    content = getattr(reply, "content", reply) or ""
-    await check.finish(content.strip() or "没有获取到回复。")
+
+    group_id = get_group_id(message)
+    if group_id and is_group_message(message):
+        reply = get_group_chat_service().chat(
+            group_id=group_id,
+            user_id=get_user_id(message),
+            user_name=get_display_name(message),
+            text=text,
+        )
+        await check.finish(reply.strip() or "没有获取到回复。")
+        return
+
+    await check.finish("当前只支持群聊场景直接对话。")

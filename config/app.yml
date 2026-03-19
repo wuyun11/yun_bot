@@ -1,0 +1,25 @@
+library_name: default
+library_code: default
+
+paths:
+  data_dir: data
+  group_refs_dir: data/groups
+
+chroma:
+  collection_name: qq_bot_docs
+  persist_directory: chroma_db
+  chunk_size: 500
+  chunk_overlap: 50
+  k: 4
+  separators: ["\n\n", "\n", "。", "！", "？", ".", "!", "?"]
+  allow_file_types: [".txt", ".md", ".pdf"]
+
+logging:
+  log_dir: logs
+
+history:
+  store_dir: data/chat_history
+  max_messages: 20
+
+user_alias:
+  store_dir: data/user_aliases

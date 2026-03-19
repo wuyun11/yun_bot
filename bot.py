@@ -6,7 +6,7 @@ from nonebot.log import default_format
 nonebot.init() # 初始化nonebot
 
 driver = nonebot.get_driver() # 设定驱动
-driver.register_adapter(QQAdapter)  # 注册QQ适配器
+driver.register_adapter(QQAdapter)  # 注册 QQ 官方适配器
 
 nonebot.load_builtin_plugins('echo', 'single_session') # 添加一些自带插件
 nonebot.load_from_toml("pyproject.toml") # 加载配置文件

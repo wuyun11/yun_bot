@@ -1,0 +1,8 @@
+llm_provider: dashscope
+agent_model_name: qwen-plus
+rag_chain_model_name: qwen-turbo
+
+embedding_provider: dashscope
+embedding_model_name: text-embedding-v2
+
+ollama_base_url: http://localhost:11434

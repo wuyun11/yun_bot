@@ -1,0 +1,3 @@
+yun_bot is a simple QQ bot project based on NoneBot.
+This sample file exists so the RAG pipeline can be tested quickly.
+You can replace this file with your own txt, md, or pdf documents.
